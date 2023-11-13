@@ -1,5 +1,7 @@
 import pygame
 import sys
+import CLASSES as c
+
 
 pygame.init()
 
@@ -7,7 +9,7 @@ pygame.init()
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Line Segment Intersection Demo")
-
+point = c.point(100,300)
 # Define line segment endpoints
 line1 = [(100, 100), (400, 400)]
 line2 = [(200, 300), (600, 100)]
@@ -48,7 +50,7 @@ while True:
     # Draw line segments
     pygame.draw.line(screen, (255, 0, 0), line1[0], line1[1], 2)
     pygame.draw.line(screen, (0, 0, 255), line2[0], line2[1], 2)
-
+    point.draw(screen,(255,255,255),5)
     # Highlight intersection if detected
     if intersection:
         pygame.draw.circle(screen, (0, 255, 0), (width // 2, height // 2), 10)
