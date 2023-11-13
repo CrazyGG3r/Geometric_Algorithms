@@ -7,7 +7,7 @@ class point:
         self.x = x
         self.y = y
         self.color = color
-        self.radius = 5
+        self.radius = 10
 
 
     def draw(self, surface):

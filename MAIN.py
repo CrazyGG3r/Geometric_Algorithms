@@ -12,7 +12,7 @@ pygame.display.set_caption("Line Segment Intersection Demo")
 
 point = c.point(100,300,(233,2,33))
 p2 = c.point(600,400,(33,55,66))
-l = c.line(1,4,(220,220,100))
+l = c.line(2,4,(30 ,30,30))
 ps = []
 for _ in range(10):
         x = r.randint(0,width-10)
