@@ -1,7 +1,7 @@
 import pygame
 import sys
 import CLASSES as c
-
+import random as r
 
 pygame.init()
 
@@ -12,7 +12,12 @@ pygame.display.set_caption("Line Segment Intersection Demo")
 
 point = c.point(100,300,(233,2,33))
 p2 = c.point(600,400,(33,55,66))
-l = c.line(1,10,(220,220,100))
+l = c.line(1,4,(220,220,100))
+ps = []
+for _ in range(10):
+        x = r.randint(0,width-10)
+        y = r.randint(0,height-10)
+        ps.append(c.point(x, y, (r.randint(0,255),r.randint(0,255),r.randint(0,255))))
 
 clock = pygame.time.Clock()
 # Main game loop
@@ -24,12 +29,18 @@ while True:
             sys.exit()
 
 
-
+    
     # Draw line segments
     
     l.update(dt)
-    l.draw(screen,point,p2)
-    point.draw(screen)
-    p2.draw(screen)
+    #l.draw(screen,point,p2)
+    #point.draw(screen)
+    #p2.draw(screen)
+    #b = p2
+    for a in ps:
+        for b in ps:
+            l.draw(screen,b,a)
+    for a in ps:
+        a.draw(screen)
     # Update the display
     pygame.display.flip()
