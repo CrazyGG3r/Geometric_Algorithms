@@ -8,6 +8,7 @@ class point:
         self.y = y
         self.color = color
         self.radius = 10
+        self.completed = True
 
 
     def draw(self, surface):
@@ -27,12 +28,19 @@ class line:
         self.elapsed +=dt
         if self.elapsed >= self.duration:
             self.elapsed = self.duration
+            self.completed = False
+        else:
+            self.completed = True
 
     def draw(self,screen,point1,point2):
-         progress = self.elapsed / self.duration
-         current_x = int(point1.x + (point2.x - point1.x) * progress)
-         current_y = int(point1.y + (point2.y - point1.y) * progress)
-         pygame.draw.line(screen, self.color, (point1.x,point1.y),(current_x, current_y), self.w)
+        if point1.x == point2.x and point1.y == point2.y:
+            self.elapsed = self.duration
+            
+        else:
+            progress = self.elapsed / self.duration
+            current_x = int(point1.x + (point2.x - point1.x) * progress)
+            current_y = int(point1.y + (point2.y - point1.y) * progress)
+            pygame.draw.line(screen, self.color, (point1.x,point1.y),(current_x, current_y), self.w)
 
 
 

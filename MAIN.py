@@ -1,3 +1,4 @@
+from pickle import FALSE
 import pygame
 import sys
 import CLASSES as c
@@ -12,7 +13,8 @@ pygame.display.set_caption("Line Segment Intersection Demo")
 
 point = c.point(100,300,(233,2,33))
 p2 = c.point(600,400,(33,55,66))
-l = c.line(2,5,(200 ,200,30))
+ldur = 1
+l = c.line(2,ldur,(200 ,200,30))
 ps = []
 for _ in range(10):
         x = r.randint(0,width-10)
@@ -28,28 +30,38 @@ print(type(cvh[0]))
 
 clock = pygame.time.Clock()
 # Main game loop
+i = 0
+curr = cvh[i+1]
+prev = cvh[i]
+space = False
 while True:
+     
     dt = clock.tick(60) / 1000.0
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-
-
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            space = True
+    if space == False:
+        continue
     
-    # Draw line segments
-    
-    
-    
+    for a in ps:
+        a.draw(screen)
+        
     l.update(dt)
-    #l.draw(screen,point,p2)
-    #point.draw(screen)
-    #p2.draw(screen)
-    b = cvh[0]
-    for a in cvh:
-        l.draw(screen,b,a)
-        b = a
-    l.draw(screen,cvh[len(cvh)-1],cvh[0])
+    if l.elapsed != ldur:
+        l.draw(screen,prev,curr)
+    else:
+        if i == len(cvh)-1:
+            curr = cvh[0]
+            prev = cvh[-1]
+        else:
+            prev = curr
+            curr = cvh[i+1]
+            i = i+1
+        l.elapsed = 0
+        l.draw(screen,prev,curr)
     for a in ps:
         a.draw(screen)
     # Update the display
