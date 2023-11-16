@@ -88,7 +88,7 @@ class trail:
         
     def drawtrail(self, screen):
         for a in self.trailpoints:
-            a.dynamic_color_draw(screen,(r.randint(0,255),r.randint(0,255),r.randint(0,255)))
+            a.dynamic_color_draw(screen,(0,200,200))
     
     def erasetrail(self,screen,bg):
         for a in self.trailpoints:
@@ -119,7 +119,7 @@ class Button:
                 
     def draw(self,screen):
         if self.is_hovered:
-            text_color = (r.randint(0,255),r.randint(0,255),r.randint(0,255))
+            text_color = (0,255,255)
         else:
             text_color = self.text_color
         text_surface = self.font.render(self.text, True, text_color)
