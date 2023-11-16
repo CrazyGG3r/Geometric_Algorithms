@@ -113,8 +113,8 @@ elif choice == 2:
 elif choice == 3:
     pygame.display.set_caption("Line Segment Intersection Demo")
     screen = pygame.display.set_mode((width, height))
-    qe = cv.QuickElimination(ps)
-    cvh = qe.quick_elimination()
+    qh=cv.QuickHull(ps)
+    cvh = qh.find_hull()
     clock = pygame.time.Clock()
     # Main game loop
     i = 0

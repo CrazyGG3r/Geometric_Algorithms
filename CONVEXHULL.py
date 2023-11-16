@@ -1,6 +1,7 @@
 from functools import cmp_to_key
 from itertools import combinations
 import CLASSES as c
+import math
 class JarvisMarch:
     def __init__(self, points):
         self.points = points
@@ -132,32 +133,75 @@ class GrahamScan:
 
         return S
 
-class QuickElimination:
+class QuickHull:
     def __init__(self, points):
         self.points = points
+        self.hull = []
 
-    def sort_points(self):
-        self.points.sort(key=lambda p: p.x)
+    def find_hull(self):
+        if len(self.points) < 3:
+            print("Convex hull is not possible with less than 3 points.")
+            return
 
-    def is_right(self, p1, p2, p3):
-        det = (p3.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (p3.x - p1.x)
-        return det < 0
+        # Find the leftmost and rightmost points
+        min_x, max_x = float('inf'), float('-inf')
+        leftmost, rightmost = None, None
+        for point in self.points:
+            if point.x < min_x:
+                min_x = point.x
+                leftmost = point
+            if point.x > max_x:
+                max_x = point.x
+                rightmost = point
 
-    def quick_elimination(self):
-        hull = []
-        self.sort_points()
+        self.hull.append(leftmost)
+        self.hull.append(rightmost)
 
-        # Add the first two points to the hull
-        hull.append(self.points[0])
-        hull.append(self.points[1])
+        # Split the points into two sets based on which side of the line they lie
+        points_left = [point for point in self.points if self.orientation(leftmost, rightmost, point) == 1]
+        points_right = [point for point in self.points if self.orientation(leftmost, rightmost, point) == -1]
 
-        for i in range(2, len(self.points)):
-            while len(hull) >= 2 and not self.is_right(hull[-2], hull[-1], self.points[i]):
-                hull.pop()
+        # Recursively find the convex hull on each side of the line
+        self.find_hull_recursive(leftmost, rightmost, points_left)
+        self.find_hull_recursive(rightmost, leftmost, points_right)
 
-            hull.append(self.points[i])
+        return self.hull
+    def find_hull_recursive(self, p1, p2, points):
+        if not points:
+            return
 
-        return hull
+        # Find the point with maximum distance from the line formed by p1 and p2
+        max_distance = 0
+        farthest_point = None
+        for point in points:
+            current_distance = self.distance(p1, p2, point)
+            if current_distance > max_distance:
+                max_distance = current_distance
+                farthest_point = point
+
+        # Add the farthest point to the convex hull
+        self.hull.insert(self.hull.index(p2), farthest_point)
+
+        # Split the points into two sets based on which side of the line they lie
+        points_left = [point for point in points if self.orientation(p1, farthest_point, point) == 1]
+        points_right = [point for point in points if self.orientation(farthest_point, p2, point) == 1]
+
+        # Recursively find the convex hull on each side of the line
+        self.find_hull_recursive(p1, farthest_point, points_left)
+        self.find_hull_recursive(farthest_point, p2, points_right)
+
+    @staticmethod
+    def orientation(p, q, r):
+        val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
+        if val == 0:
+            return 0
+        return 1 if val > 0 else -1
+
+    @staticmethod
+    def distance(p1, p2, p):
+        return abs((p.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (p.x - p1.x)) / ((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2) ** 0.5
+
+    
 
 
 
