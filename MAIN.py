@@ -17,7 +17,7 @@ l = c.line(2,ldur,(200 ,200,30))
 ps = []
 for _ in range(10):
     x = r.randint(0,width-10)
-    y = r.randint(0,height-10)
+    y = r.randint(0,height-10) 
     ps.append(c.point(x, y, (r.randint(0,255),r.randint(0,255),r.randint(0,255))))
 
 #TAKING INPUT
