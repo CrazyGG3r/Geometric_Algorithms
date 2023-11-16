@@ -21,18 +21,30 @@ background =(24, 3, 82)
 firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
 tr = c.trail(firstset,7)
 
-
+#menu text
+headin = c.Text("Geometric Algorithms",cm.fonts[0],36,(100,100,150),320,90)
+dot = c.point(0,0,(50,50,50),5)
+dot_interval = 1000
+last_dot_time = 0
+screen.fill(background)
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     
-    screen.fill(background)
+    current_time = pygame.time.get_ticks()
+    if current_time - last_dot_time > dot_interval:
+        dot.update_coords((r.randint(0,width),r.randint(0,height)))
+        dot.draw(screen)
+        last_dot_time = current_time
+        # Add a random dot
     mouse = pygame.mouse.get_pos()
     print(mouse)
+    
     tr.erasetrail(screen,background)
     tr.updatetrail(mouse)
     tr.drawtrail(screen)
+    headin.draw(screen)
     pygame.display.flip()
 
     clock.tick(60)
