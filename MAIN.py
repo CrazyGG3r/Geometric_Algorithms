@@ -1,5 +1,7 @@
 from asyncio.windows_events import NULL
+from os import abort
 from pickle import FALSE
+from numpy import False_
 import pygame
 import sys
 import CLASSES as c
@@ -31,7 +33,8 @@ last_dot_time = 0
 l = c.line(1,10,(50,50,50))
 screen.fill(background)
 
-
+def ext():
+    abort()
 #buttons
 def dummdumm(screen = NULL):
     print("dumdum")
@@ -43,7 +46,8 @@ button0 = c.Button("Set Points"       ,b1,b2      ,150,25,cm.fonts[0],20,buttonc
 button1 = c.Button("Convex Hull"      ,b1,b2+(o*1),150,25,cm.fonts[0],20,buttoncolor,dummdumm)
 button2 = c.Button("Line Intersection",b1,b2+(o*2),170,25,cm.fonts[0],20,buttoncolor,dummdumm)
 button3 = c.Button("Credits"          ,b1,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
-button4 = c.Button("Exit"             ,b1,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
+button4 = c.Button("Exit"             ,b1,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,ext)
+butt = [button0,button1,button2,button3,button4] 
 while running:
       
     dt = clock.tick(60) / 1000.0
@@ -52,32 +56,22 @@ while running:
             running = False
         elif event.type == pygame.MOUSEMOTION:
             # Check if the mouse is over the button
-            button0.is_hovered = button0.x < event.pos[0] < button0.x + button0.width and button0.y < event.pos[1] < button0.y + button0.height
-            button1.is_hovered = button1.x < event.pos[0] < button1.x + button1.width and button1.y < event.pos[1] < button1.y + button1.height
-            button2.is_hovered = button2.x < event.pos[0] < button2.x + button2.width and button2.y < event.pos[1] < button2.y + button2.height
-            button3.is_hovered = button3.x < event.pos[0] < button3.x + button3.width and button3.y < event.pos[1] < button3.y + button3.height            
-            button4.is_hovered = button4.x < event.pos[0] < button4.x + button4.width and button4.y < event.pos[1] < button4.y + button4.height
+            for a in butt:           
+                a.is_hovered = a.x < event.pos[0] < a.x + a.width and a.y < event.pos[1] < a.y + a.height
             
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             # Check if the left mouse button is clicked
-            if button0.is_hovered:
-                button0.is_clicked = True
-            if button1.is_hovered:
-                button1.is_clicked = True
-            if button2.is_hovered:
-                button2.is_clicked = True
-            if button3.is_hovered:
-                button3.is_clicked = True
-            if button4.is_hovered:
-                button4.is_clicked = True
+            for a in butt:
+                if a.is_hovered:
+                   a.is_clicked = True
+           
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             # Check if the left mouse button is released
-            if button1.is_clicked:
-                button1.is_clicked = False
-                button1.action()      
-            if button2.is_clicked:
-                button2.is_clicked = False
-                button2.action()
+            for a in butt:
+                if a.is_clicked:
+                    a.is_clicked = False
+                    a.action()      
+            
     current_time = pygame.time.get_ticks()
     if current_time - last_dot_time > dot_interval:
         dot.update_coords((r.randint(0,width),r.randint(0,height)))
