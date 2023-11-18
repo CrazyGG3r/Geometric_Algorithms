@@ -33,10 +33,8 @@ def conv(screen):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                space = True
-        if space == False:
-            continue
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+                return
     
         for a in ps:
             a.draw(screen)
@@ -58,4 +56,3 @@ def conv(screen):
             a.draw(screen)
         # Update the display
         pygame.display.flip()
-        print("1")

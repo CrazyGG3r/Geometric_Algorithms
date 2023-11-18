@@ -26,7 +26,7 @@ class line:
         self.duration = duration
         self.elapsed = 0
         self.color = color;
-
+ 
     def update(self,dt):
         self.elapsed +=dt
         if self.elapsed >= self.duration:
@@ -34,7 +34,7 @@ class line:
             self.completed = False
         else:
             self.completed = True
-
+ 
     def draw(self,screen,point1,point2):
         if point1.x == point2.x and point1.y == point2.y:
             self.elapsed = self.duration
@@ -44,6 +44,10 @@ class line:
             current_x = int(point1.x + (point2.x - point1.x) * progress)
             current_y = int(point1.y + (point2.y - point1.y) * progress)
             pygame.draw.line(screen, self.color, (point1.x,point1.y),(current_x, current_y), self.w)
+    def instadraw(self,screen,point1,point2):
+        pygame.draw.line(screen,self.color,(point1.x,point1.y),(point2.x))
+
+
 class Text:
     def __init__(self, text, font, font_size, color, x, y):
         self.text = text
@@ -117,7 +121,7 @@ class Button:
             else: 
                 self.is_hovered = False
                 
-    def draw(self,screen):
+    def draw(self,screen=0):
         if self.is_hovered:
             text_color = (0,255,255)
         else:
