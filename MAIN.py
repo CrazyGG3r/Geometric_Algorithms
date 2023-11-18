@@ -7,7 +7,7 @@ import random as r
 import CONVEXHULL as cv 
 import cosmetics as cm
 import setpoints as se
-import convexhullpage as cvhp
+import CVHscreen as cvhp
 from functools import cmp_to_key
 
 #pygame kachra =-=-=-=--=-=-

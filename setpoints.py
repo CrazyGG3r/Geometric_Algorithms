@@ -26,8 +26,10 @@ def select_file(screen  = None):
     else:
         return 
 def copy_file_to_program_directory(file_path):
-    base_name = os.path.basename(file_path)
-    destination = os.path.join('', base_name)
+    destination = os.path.join('', "points.txt")  
+    shutil.copy(file_path, destination)
+    print(f"Copied file to {destination}")
+
 
  
     if os.path.exists(destination):
@@ -64,13 +66,13 @@ def sets(screen):
     #=-=-
     tc = (0,150,150)
     f = "None"
-    b1px = 300
-    b1py = 100
+    b1px = 450
+    b1py = 200
     bw = 260
     bh = 40
     onft = cm.fonts[0]
     b1 = c.Button("Uploaded Points: ",b1px,b1py,bw,bh,onft,36,tc,select_file)
-    selec = c.Text(f,cm.fonts[0],40,(0,150,150),600,96)
+    selec = c.Text(f,cm.fonts[0],40,(0,150,150),1.8*b1px,b1py-4)
     b2 = c.Button("Draw points",b1px,b1py+50,bw,bh,onft,36,tc,DRAW.drawpoints)
     b3 = c.Button("Randomize points",b1px,b1py+100,bw+10,bh,onft,36,tc,randomizetenpoints)
     clock = pygame.time.Clock()

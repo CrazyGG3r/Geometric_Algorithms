@@ -53,12 +53,6 @@ def drawpoints(screen):
                      if a.is_hovered:
                          a.is_clicked = True
           
-                 if not drawn:
-                     if event.button == 1:
-                        m = pygame.mouse.get_pos()
-                        points.append(m)
-                        p4.append(c.point(m[0],m[1],(0,255,255),5))
-                        print("Point SELEECTED!")
           
              elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                  for a in butt:
@@ -70,6 +64,12 @@ def drawpoints(screen):
                              screen.fill(background)
                              return
                        
+                 if not drawn:
+                     if event.button == 1:
+                        m = pygame.mouse.get_pos()
+                        points.append(m)
+                        p4.append(c.point(m[0],m[1],(0,255,255),5))
+                        print("Point SELEECTED!")
           
              if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
                  return
