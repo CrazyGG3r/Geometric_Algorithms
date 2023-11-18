@@ -37,7 +37,7 @@ def copy_file_to_program_directory(file_path):
     shutil.copy(file_path, destination)
     print(f"Copied file to {destination}")
   
-def randomizetenpoints():
+def randomizetenpoints(sc = None):
     x = 0
     y = 0
     p =[]
@@ -45,6 +45,9 @@ def randomizetenpoints():
         x = r.randint(320,640)
         y = r.randint(180,360)
         p.append((x,y))
+    with open('points.txt', 'w') as file:
+        for point in p:
+            file.write(f"{point[0]},{point[1]}\n")
     
 pygame.init()
 
@@ -59,7 +62,6 @@ def sets(screen):
     firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
     tr = c.trail(firstset,7)
     #=-=-
-    l = c.line(1,10,(50,50,50))
     tc = (0,150,150)
     f = "None"
     b1px = 300
@@ -70,7 +72,7 @@ def sets(screen):
     b1 = c.Button("Uploaded Points: ",b1px,b1py,bw,bh,onft,36,tc,select_file)
     selec = c.Text(f,cm.fonts[0],40,(0,150,150),600,96)
     b2 = c.Button("Draw points",b1px,b1py+50,bw,bh,onft,36,tc,DRAW.drawpoints)
-    b3 = c.Button("Randomize points",b1px,b1py+100,bw+10,bh,onft,36,tc,None)
+    b3 = c.Button("Randomize points",b1px,b1py+100,bw+10,bh,onft,36,tc,randomizetenpoints)
     clock = pygame.time.Clock()
     background = ((0,15,15))
     screen.fill(background)
