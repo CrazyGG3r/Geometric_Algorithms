@@ -39,6 +39,7 @@ def drawpoints(screen):
     drawn = False
     running = True
     m= pygame.mouse.get_pos()
+    clock = pygame.time.Clock()
     while running:
           for event in pygame.event.get():
              if event.type == pygame.QUIT:
@@ -95,6 +96,7 @@ def drawpoints(screen):
               a.draw(screen)
           for a in butt:
               a.draw(screen)
+          clock.tick(60)
           pygame.display.flip()
           
           
