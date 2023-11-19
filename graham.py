@@ -123,7 +123,8 @@ def gra(scr):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-    
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+                return
         # Draw the current state of the Graham Scan
         draw(points, hull_points, screen)
         clock.tick(60)  # Maintain 60 frames per second

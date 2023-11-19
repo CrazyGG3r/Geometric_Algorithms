@@ -7,6 +7,7 @@ import cosmetics as cm
 import setpoints as se
 import CVHscreen as cvhp
 import setline as sl
+import LIINESEC as lint
 
 #pygame kachra =-=-=-=--=-=-
 pygame.init()
@@ -15,8 +16,12 @@ screen = pygame.display.set_mode((width,height))
 running = True
 clock = pygame.time.Clock()
 background =(0,15,15)
-
-
+exiet = 0
+def ext(a = 0):
+    global exiet
+    exiet = 1
+    
+    
 
 #mouse effects
 firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
@@ -45,9 +50,9 @@ buttoncolor = (0,170,170)
 button0 = c.Button("Set Points"       ,b1-10 ,b2      ,150,25,cm.fonts[0],20,buttoncolor,se.sets)
 button1 = c.Button("Set Line"         ,b1-10 ,b2+(o*1),150,25,cm.fonts[0],20,buttoncolor,sl.setline)
 button2 = c.Button("Convex Hull"      ,b1-20,b2+(o*2),170,25,cm.fonts[0],20,buttoncolor,cvhp.conv)
-button3 = c.Button("Line Intersection",b1   ,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
+button3 = c.Button("Line Intersection",b1   ,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,lint.lineint)
 button4 = c.Button("Credits"          ,b1   ,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
-button5 = c.Button("Exit"             ,b1   ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,None)
+button5 = c.Button("Exit"             ,b1   ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,ext)
 butt = [button0,button1,button2,button3,button4,button5] 
 page_requested = None
 #=-=-=-
@@ -58,6 +63,8 @@ dframe = c.point(10,700,(0,10,10),70)
 
 while running:
     dt = clock.tick(60) / 1000.0
+    if exiet == 1 :
+        break
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
