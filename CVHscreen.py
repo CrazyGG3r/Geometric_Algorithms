@@ -4,6 +4,7 @@ import CLASSES as c
 import cosmetics as cm
 import CONVEXHULL as ch
 import random as r
+import jarvis as j
 def get_points():
     ps = []
     with open("points.txt", 'r') as file:
@@ -12,6 +13,8 @@ def get_points():
                 x, y = map(int, coordinates)
                 ps.append((x, y)) 
     return ps
+
+
 def conv(screen):
     pygame.init()
     ps = get_points()
@@ -36,20 +39,26 @@ def conv(screen):
     firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
     tr = c.trail(firstset,7)
     #=-=-=-=-=-=-=-=--=-=-=-=
+    
+
+
     #buttons
-    lbx = 50
-    lby = 100
+    lbx = 10
+    lby = 650
     bw = 200
     bh = 40
     ft = cm.fonts[0]
     tc = (0,150,150)
-    size = 36
-    b1 = c.Button("Jarvis March",lbx,lby,bw,bh,ft,size,tc,None)
-    b2 = c.Button("Graham Scan",lbx,lby+50,bw,bh,ft,size,tc,None)
-    b3 = c.Button("Quick Elimination",lbx,lby+50,bw,bh,ft,size,tc,None)
-    b4 = c.Button("Brute Force",lbx,lby+50,bw,bh,ft,size,tc,None)
-    b5 = c.Button("Montone's algo",lbx,lby+50,bw,bh,ft,size,tc,None)
+    size = 25
+    off = 50
+    ox = bw + 50
+    b1 = c.Button("Jarvis March"     ,lbx       ,lby,bw,bh,ft,size,tc,j.jar)
+    b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,None)
+    b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,None)
+    b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,None)
+    b5 = c.Button("Montone's algo "  ,lbx+(ox*4),lby,bw,bh,ft,size,tc,None)
     butt  = [b1,b2,b3,b4,b5]
+    page_requested = None
     #=-=-=-=-=-=-=-
     screen.fill(background)
     while True:
@@ -70,17 +79,18 @@ def conv(screen):
                     if a.is_hovered:
                         a.is_clicked = True
     
-        
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             # Check if the left mouse button is released
                 for a in butt:
                     if a.is_hovered and a.is_clicked:
                         a.is_clicked = False
-         #trailstart
-         tr.erasetrail(screen,background)
-         tr.updatetrail(mouse)
-         tr.drawtrail(screen)
-         #trailend
+                        page_requested = a.action
+                        break
+         if page_requested:
+            screen.fill(background)  # Clear the screen before changing the page
+            page_requested(screen)  # Call the action associated with the button
+            screen.fill(background)
+            page_requested = None  # Reset the flag
          current_time = pygame.time.get_ticks()
          if current_time - last_dot_time > dot_interval:
              dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
@@ -95,4 +105,9 @@ def conv(screen):
          for a in butt:
              a.draw(screen)
          clock.tick(60)
+         #trailstart
+         tr.erasetrail(screen,background)
+         tr.updatetrail(mouse)
+         tr.drawtrail(screen)
+         #trailend
          pygame.display.flip()

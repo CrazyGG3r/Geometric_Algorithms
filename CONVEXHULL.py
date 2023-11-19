@@ -1,52 +1,51 @@
 from functools import cmp_to_key
 from itertools import combinations
 import CLASSES as c
+
+
 class JarvisMarch:
     def __init__(self, points):
         self.points = points
+        self.hull = []
 
-    def left_index(self):
-        min_idx = 0
+    def leftmost_point(self):
+        leftmost = 0
         for i in range(1, len(self.points)):
-            if self.points[i].x < self.points[min_idx].x:
-                min_idx = i
-            elif self.points[i].x == self.points[min_idx].x:
-                if self.points[i].y > self.points[min_idx].y:
-                    min_idx = i
-        return min_idx
+            if self.points[i].x < self.points[leftmost].x:
+                leftmost = i
+            elif self.points[i].x == self.points[leftmost].x:
+                if self.points[i].y > self.points[leftmost].y:
+                    leftmost = i
+        return leftmost
 
     def orientation(self, p, q, r):
         val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
         if val == 0:
-            return 0
+            return 0  # Co-linear
         elif val > 0:
-            return 1
-        else:
-            return 2
+            return 1  # Clockwise
+        return 2  # Counterclockwise
 
-    def convex_hull(self):
-        n = len(self.points)
-        if n < 3:
-            return []
+    def next_hull_point(self, p):
+        q = (p + 1) % len(self.points)
+        for i in range(len(self.points)):
+            if self.orientation(self.points[p], self.points[i], self.points[q]) == 2:
+                q = i
+        return q
 
-        l = self.left_index()
-        hull = []
-        p = l
-        q = 0
+    def compute_convex_hull(self):
+        if len(self.points) < 3:
+            return
+
+        leftmost = self.leftmost_point()
+        p = leftmost
         while True:
-            hull.append(p)
-            q = (p + 1) % n
-
-            for i in range(n):
-                if self.orientation(self.points[p], self.points[i], self.points[q]) == 2:
-                    q = i
-
-            p = q
-            if p == l:
+            self.hull.append(p)
+            q = self.next_hull_point(p)
+            if q == leftmost:
                 break
+            p = q
 
-        result = [(self.points[i]) for i in hull]
-        return result
 
 
 

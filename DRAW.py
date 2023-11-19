@@ -1,4 +1,4 @@
-from tkinter import W
+
 import pygame
 import CLASSES as c
 import cosmetics as cm

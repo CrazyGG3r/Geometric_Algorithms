@@ -1,3 +1,4 @@
+from cgitb import text
 import pygame
 import random as r
 from cosmetics import * 
@@ -16,9 +17,13 @@ class point:
         self.x = coords[0]
         self.y = coords[1]
     def draw(self, surface):
+        te = "("+str(self.x)+","+str(self.y)+")"
+        info = Text(te,fonts[0],12,self.color,self.x,self.y+10)
         pygame.draw.circle(surface,self.color,(self.x,self.y),self.radius)
-
-    def drawtopoint(self,screen,outr):
+        info.draw(surface)
+    def drawcustom(self,screen,outr,colo):
+        pygame.draw.line(screen,colo,(self.x,self.y),(outr.x,outr.y),2)
+    def draw_to_point(self,screen,outr):
         pygame.draw.line(screen,self.color,(self.x,self.y),(outr.x,outr.y))
 class line:
     def __init__(self,w,duration,color):
@@ -34,7 +39,8 @@ class line:
             self.completed = False
         else:
             self.completed = True
- 
+    def erase(self,screen,p1,p2):
+        pygame.draw.line(screen,self.color,(p1.x,p1.y),(p2.x,p2.y))
     def draw(self,screen,point1,point2):
         if point1.x == point2.x and point1.y == point2.y:
             self.elapsed = self.duration
@@ -96,11 +102,7 @@ class trail:
     
     def erasetrail(self,screen,bg):
         for a in self.trailpoints:
-            a.dynamic_color_draw(screen,bg)
-        
-        
-        
-        
+            a.dynamic_color_draw(screen,bg)      
 class Button:
     def __init__(self, text, x, y, width, height,textstyle,size, text_color,action):
         self.text = text

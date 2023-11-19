@@ -30,12 +30,6 @@ def copy_file_to_program_directory(file_path):
     shutil.copy(file_path, destination)
     print(f"Copied file to {destination}")
 
-
- 
-    if os.path.exists(destination):
-        name, extension = os.path.splitext(base_name)
-        destination = os.path.join('', f"{name}_{int(time.time())}{extension}")
-
     shutil.copy(file_path, destination)
     print(f"Copied file to {destination}")
   
@@ -86,18 +80,15 @@ def sets(screen):
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEMOTION:
-            # Check if the mouse is over the button
                 for a in butt:           
                     a.is_hovered = a.x < event.pos[0] < a.x + a.width and a.y < event.pos[1] < a.y + a.height
             
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            # Check if the left mouse button is clicked
                 for a in butt:
                     if a.is_hovered:
                         a.is_clicked = True
             
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            # Check if the left mouse button is released
                 for a in butt:
                     if a.is_clicked and a.is_hovered:
                         a.is_clicked = False
