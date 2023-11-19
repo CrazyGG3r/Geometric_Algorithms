@@ -1,4 +1,0 @@
-ports:
-postgresql: 5432
-oracle : 1521
-maria : 3302

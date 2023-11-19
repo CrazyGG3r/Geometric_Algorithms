@@ -5,6 +5,9 @@ import cosmetics as cm
 import CONVEXHULL as ch
 import random as r
 import jarvis as j
+import graham as g
+import quickhull as q
+import bruteforce as b
 def get_points():
     ps = []
     with open("points.txt", 'r') as file:
@@ -53,9 +56,9 @@ def conv(screen):
     off = 50
     ox = bw + 50
     b1 = c.Button("Jarvis March"     ,lbx       ,lby,bw,bh,ft,size,tc,j.jar)
-    b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,None)
-    b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,None)
-    b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,None)
+    b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,g.gra)
+    b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,q.qui)
+    b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,b.bruf)
     b5 = c.Button("Montone's algo "  ,lbx+(ox*4),lby,bw,bh,ft,size,tc,None)
     butt  = [b1,b2,b3,b4,b5]
     page_requested = None

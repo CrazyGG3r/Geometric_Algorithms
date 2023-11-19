@@ -1,8 +1,9 @@
 from functools import cmp_to_key
 from itertools import combinations
 import CLASSES as c
-
-
+import math
+import pygame 
+pygame.init()
 class JarvisMarch:
     def __init__(self, points):
         self.points = points
@@ -53,83 +54,60 @@ class JarvisMarch:
 
 
 
-
-class GrahamScan:
+class GrahamScanVisualization:
     def __init__(self, points):
         self.points = points
-        self.convex_hull = []
+        self.hull = []
 
     def orientation(self, p, q, r):
-        val = ((q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y))
+        val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
         if val == 0:
-            return 0  # collinear
+            return 0  # Collinear
         elif val > 0:
-            return 1  # clockwise
-        else:
-            return 2  # counterclockwise
+            return 1  # Clockwise
+        return 2  # Counterclockwise
 
-    def compare(self, p1, p2):
-        o = self.orientation(self.p0, p1, p2)
-        if o == 0:
-            if self.distSq(self.p0, p2) >= self.distSq(self.p0, p1):
-                return -1
-            else:
-                return 1
-        else:
-            if o == 2:
-                return -1
-            else:
-                return 1
-
-    def distSq(self, p1, p2):
-        return ((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y))
-
-    def next_to_top(self, S):
-        return S[-2]
-
-    def convex_hull_graham_scan(self):
+    def graham_scan(self):
         n = len(self.points)
-
         if n < 3:
             return
 
-        ymin = self.points[0].y
-        min_index = 0
+        pivot = min(self.points, key=lambda p: (p.y, p.x))
+        sorted_points = sorted(self.points, key=lambda p: math.atan2(p.y - pivot.y, p.x - pivot.x))
+        self.hull = [pivot, sorted_points[0], sorted_points[1]]
 
-        for i in range(1, n):
-            y = self.points[i].y
+        for i in range(2, n):
+            while len(self.hull) > 1 and self.orientation(self.hull[-2], self.hull[-1], sorted_points[i]) != 2:
+                self.draw(sorted_points[i])
+                pygame.display.flip()
+                clock.tick(60)  # Adjust the frame rate as needed
+                self.hull.pop()
 
-            if y < ymin or (ymin == y and self.points[i].x < self.points[min_index].x):
-                ymin = self.points[i].y
-                min_index = i
+            self.hull.append(sorted_points[i])
+            self.draw(sorted_points[i])
+            pygame.display.flip()
+            clock.tick(60)  # Adjust the frame rate as needed
 
-        self.points[0], self.points[min_index] = self.points[min_index], self.points[0]
-        self.p0 = self.points[0]
+    def draw(self, current_point, accepted=True):
+        screen.fill((0, 0, 0))
 
-        self.points = sorted(self.points, key=cmp_to_key(self.compare))
+        for i in range(len(self.hull) - 1):
+            self.hull[i].draw_to_point(screen, self.hull[i + 1], color=(0, 255, 0), width=2)
+        if len(self.hull) > 1:
+            self.hull[-1].draw_to_point(screen, self.hull[0], color=(0, 255, 0), width=2)
 
-        m = 1
-        for i in range(1, n):
-            while i < n - 1 and self.orientation(self.p0, self.points[i], self.points[i + 1]) == 0:
-                i += 1
+        for p in self.points:
+            p.draw(screen)
 
-            self.points[m] = self.points[i]
-            m += 1
+        # Draw a dotted line to the rejected points
+        if not accepted:
+            for point in self.points:
+                if point not in self.hull:
+                    pygame.draw.line(screen, (255, 0, 0), (current_point.x, current_point.y),
+                                     (point.x, point.y), 2)
 
-        if m < 3:
-            return
-
-        S = []
-        S.append(self.points[0])
-        S.append(self.points[1])
-        S.append(self.points[2])
-
-        for i in range(3, m):
-            while len(S) > 1 and self.orientation(self.next_to_top(S), S[-1], self.points[i]) != 2:
-                S.pop()
-            S.append(self.points[i])
-
-        return S
+        pygame.display.flip()
+        clock.tick(2)  # Adjust the frame rate as needed  
 
 class QuickElimination:
     def __init__(self, points):

@@ -1,11 +1,10 @@
-from re import S
-from turtle import back
+
 import pygame
 import sys
 import CLASSES as c
 import cosmetics as cm
-import random as r
 import CONVEXHULL as ch
+import random as r
 
 background = (0,15,15)
 eraseline = c.line(1,1,background)
@@ -25,7 +24,7 @@ def drawhull(screen,points, hull_points):
         if len(hull_points) > 1:
             points[hull_points[-1]].draw_to_point(screen, points[hull_points[0]])
             
-        pygame.display.flip()
+       
 def drawhullfinal(screen,points, hull_points):
         c = (0,200,200)    
         for p in points:
@@ -35,7 +34,7 @@ def drawhullfinal(screen,points, hull_points):
         if len(hull_points) > 1:
             points[hull_points[-1]].drawcustom(screen, points[hull_points[0]],c)
             
-        pygame.display.flip()
+       
         
 def jar(screen,points = 0):
     pygame.init()
@@ -65,6 +64,7 @@ def jar(screen,points = 0):
     tr = c.trail(firstset,7)
     #=-=-=-=-=-=-=-=--=-=-=-=
     screen.fill(background)
+    once = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -77,7 +77,10 @@ def jar(screen,points = 0):
         # Incrementally add to hull
         next_point = jarvis_march.next_hull_point(hull_points_indices[-1])
         if next_point == leftmost_point:
-            screen.fill(background)
+            if once == 0:
+                screen.fill(background)
+                once =1 
+            
             drawhullfinal(screen,points, hull_points_indices)  
         else:
             
@@ -87,6 +90,17 @@ def jar(screen,points = 0):
         
         mouse =  pygame.mouse.get_pos()
         print(mouse)
+        #=-=-=-shahske
+        fm.update_text(str(round(clock.get_fps(),2)))
+        dframe.draw(screen)
+        fm.draw(screen)   
+        current_time = pygame.time.get_ticks()
+        if current_time - last_dot_time > dot_interval:
+            dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
+            dot.draw(screen)
+            last_dot_time = current_time
+        for a in points:
+              a.draw(screen)
         #trailstart
         tr.erasetrail(screen,background)
         tr.updatetrail(mouse)

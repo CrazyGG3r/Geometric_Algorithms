@@ -42,11 +42,21 @@ def randomizetenpoints(sc = None):
     with open('points.txt', 'w') as file:
         for point in p:
             file.write(f"{point[0]},{point[1]}\n")
-    
+def randomizefourpoints(sc = None):
+    x = 0
+    y = 0
+    p =[]
+    for _ in range(0,4):
+        x = r.randint(320,640)
+        y = r.randint(180,360)
+        p.append((x,y))
+    with open('line.txt', 'w') as file:
+        for point in p:
+            file.write(f"{point[0]},{point[1]}\n")
 pygame.init()
 
 running = True
-def sets(screen):
+def setline(screen):
     #dot
     dot = c.point(0,0,(0,40,40),5)
     dot_interval = 200
@@ -57,21 +67,20 @@ def sets(screen):
     tr = c.trail(firstset,7)
     #=-=-
     tc = (0,150,150)
-    f = "None"
+    
     b1px = 450
     b1py = 200
     bw = 260
     bh = 40
     onft = cm.fonts[0]
-    b1 = c.Button("Uploaded Points: ",b1px,b1py,bw,bh,onft,36,tc,select_file)
-    selec = c.Text(f,cm.fonts[0],40,(0,150,150),1.8*b1px,b1py-4)
-    b2 = c.Button("Draw points",b1px,b1py+50,bw,bh,onft,36,tc,DRAW.drawpoints)
-    b3 = c.Button("Randomize points",b1px,b1py+100,bw+10,bh,onft,36,tc,randomizetenpoints)
+    b1 = c.Button("Draw line",b1px,b1py,bw,bh,onft,36,tc,DRAW.drawline)
+    
+    b2 = c.Button("Randomize Line",b1px,b1py+50,bw,bh,onft,36,tc,randomizefourpoints)
     clock = pygame.time.Clock()
     background = ((0,15,15))
     screen.fill(background)
     pygame.init()
-    butt = [b1,b2,b3]
+    butt = [b1,b2]
     running = True
     while running:
         for event in pygame.event.get():
@@ -110,8 +119,7 @@ def sets(screen):
             last_dot_time = current_time
         for a in butt:
             a.draw(screen)
-        selec.update_text(f)
-        selec.draw(screen)
+
         pygame.display.flip()
         clock.tick(60)
     
