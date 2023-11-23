@@ -9,6 +9,7 @@ import CVHscreen as cvhp
 import setline as sl
 import LIINESEC as lint
 import linescreen as ll
+import WHAT as w
 
 #pygame kachra =-=-=-=--=-=-
 pygame.init()
@@ -34,7 +35,7 @@ headin = c.Text("Geometric Algorithms",cm.fonts[0],50,hcolor,320,90)
 dot = c.point(0,0,(0,27,27),10)
 dotbig = c.point(0,0,(0,17,17),5)
 dotvbig = c.point(0,0,(0,16,16),5)
-dot_interval = 100
+dot_interval = 30
 last_dot_time = 0
 l = c.line(1,10,(50,50,50))
 screen.fill(background)
@@ -52,7 +53,7 @@ button0 = c.Button("Set Points"       ,b1-10 ,b2      ,150,25,cm.fonts[0],20,but
 button1 = c.Button("Set Line"         ,b1-10 ,b2+(o*1),150,25,cm.fonts[0],20,buttoncolor,sl.setline)
 button2 = c.Button("Convex Hull"      ,b1-20 ,b2+(o*2),170,25,cm.fonts[0],20,buttoncolor,cvhp.conv)
 button3 = c.Button("Line Intersection",b1+3  ,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,ll.conv)
-button4 = c.Button("What is ....."    ,b1    ,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
+button4 = c.Button("What is a...?"    ,b1    ,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,w.what)
 button5 = c.Button("Credits"          ,b1    ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
 button6 = c.Button("Exit"             ,b1    ,b2+(o*6),130,25,cm.fonts[0],20,buttoncolor,ext)
 butt = [button0,button1,button2,button3,button4,button5,button6] 
@@ -70,30 +71,24 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.MOUSEMOTION:
-            # Check if the mouse is over the button
+        elif event.type == pygame.MOUSEMOTION:  
             for a in butt:           
                 a.is_hovered = a.x < event.pos[0] < a.x + a.width and a.y < event.pos[1] < a.y + a.height
-            
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            # Check if the left mouse button is clicked
             for a in butt:
                 if a.is_hovered:
-                   a.is_clicked = True
-    
-        
+                   a.is_clicked = True       
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            # Check if the left mouse button is released
             for a in butt:
                 if a.is_hovered and a.is_clicked:
                     a.is_clicked = False
-                    page_requested = a.action  # Set the flag to the action
+                    page_requested = a.action 
                     break
     if page_requested:
-        screen.fill(background)  # Clear the screen before changing the page
-        page_requested(screen)  # Call the action associated with the button
+        screen.fill(background)  
+        page_requested(screen)  
         screen.fill(background)
-        page_requested = None  # Reset the flag
+        page_requested = None 
 
     #for n,a in enumerate(butt):
     #    print(n,a.is_hovered,a.is_clicked)

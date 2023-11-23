@@ -1,3 +1,4 @@
+from re import L
 import pygame
 import tkinter as tk
 from tkinter import filedialog
@@ -58,8 +59,10 @@ pygame.init()
 running = True
 def setline(screen):
     #dot
+    lc = (0,40,40)
+    lds = c.line(2,2,lc)
     dot = c.point(0,0,(0,40,40),5)
-    dot_interval = 200
+    dot_interval = 5
     last_dot_time = 0
     #trail
     #mouse effects
@@ -114,8 +117,7 @@ def setline(screen):
         #trailend
         current_time = pygame.time.get_ticks()
         if current_time - last_dot_time > dot_interval:
-            dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
-            dot.draw(screen)
+            lds.idraw(screen,(r.randint(0,screen.get_width()),r.randint(0,screen.get_height())),(r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
             last_dot_time = current_time
         for a in butt:
             a.draw(screen)

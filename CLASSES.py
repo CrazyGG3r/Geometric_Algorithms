@@ -53,6 +53,8 @@ class line:
             pygame.draw.line(screen, self.color, (point1.x,point1.y),(current_x, current_y), self.w)
     def instadraw(self,screen,point1,point2):
         pygame.draw.line(screen,self.color,(point1.x,point1.y),(point2.x))
+    def idraw(self,screen,p1,p2):
+        pygame.draw.line(screen,self.color,(p1[0],p1[1]),(p2[0],p2[1]),self.w)
 
 
 class Text:
@@ -98,8 +100,8 @@ class trail:
         
         
     def drawtrail(self, screen):
-        for a in self.trailpoints:
-            a.dynamic_color_draw(screen,(0,200,200))
+        for n,a in enumerate(self.trailpoints):
+            a.dynamic_color_draw(screen,(0,(200 - (20*n)),(200-(20*n))))
     
     def erasetrail(self,screen,bg):
         for a in self.trailpoints:
