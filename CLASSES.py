@@ -10,7 +10,8 @@ class point:
         self.color = color
         self.radius = size
         self.completed = True
-
+    
+        
     def dynamic_color_draw(self,surface,colo):
         pygame.draw.circle(surface,colo,(self.x,self.y),self.radius)
     def update_coords(self,coords):

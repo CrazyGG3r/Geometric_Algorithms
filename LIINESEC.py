@@ -43,13 +43,11 @@ def do_segments_intersect(segment1, segment2):
 def on_segment(p, q, r):
     return min(p.x, r.x) <= q.x <= max(p.x, r.x) and min(p.y, r.y) <= q.y <= max(p.y, r.y)
 
-# Function to generate random line segments
 
-# Function to draw a line segment
 def draw_line(screen, color, start, end):
     pygame.draw.line(screen, color, (start.x, start.y), (end.x, end.y), 2)
 
-# Function to draw a point
+
 def draw_point(screen, color, point):
     pygame.draw.circle(screen, color, (point.x, point.y), 5)
 def get_line_segments():
@@ -60,7 +58,7 @@ def get_line_segments():
         segment2 = (Point(points[2][0], points[2][1]), Point(points[3][0], points[3][1]))
         return segment1, segment2  # Make sure to return the segments
 
-# Set up the screen
+
 def lineint(scr):
     global screen
     screen = scr

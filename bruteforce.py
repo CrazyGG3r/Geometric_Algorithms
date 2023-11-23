@@ -1,9 +1,68 @@
+
 import pygame
 import sys
-import CLASSES as c
-import cosmetics as cm
-import CONVEXHULL as ch
-import random as r
+import random
+import math
+from CLASSES import point as Point
+
+
+def orientation(p, q, r):
+    val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
+    if val == 0:
+        return 0  # Collinear
+    return 1 if val > 0 else -1  # Clockwise or counterclockwise
+
+def bruteforce(points):
+    n = len(points)
+    if n < 3:
+        return points
+
+    pivot = min(points, key=lambda p: (p.y, p.x))
+    sorted_points = sorted(points, key=lambda p: math.atan2(p.y - pivot.y, p.x - pivot.x))
+    convex_hull = [pivot, sorted_points[0], sorted_points[1]]
+
+    for i in range(2, n):
+        while len(convex_hull) > 1 and orientation(convex_hull[-2], convex_hull[-1], sorted_points[i]) != -1:
+            convex_hull.pop()
+        convex_hull.append(sorted_points[i])
+
+    return convex_hull
+
+
+
+def draw(points,hull, current_pair):
+    start=False
+    end=False
+    # Draw all points
+    for p in points:
+        p.draw(screen)
+
+    for i in range(1,len(hull)):
+        if hull[i-1].x == current_pair[0].x and hull[i-1].y == current_pair[0].y:
+            start=True
+            if hull[i].x == current_pair[1].x and hull[i].y == current_pair[1].y:
+                end=True
+        elif hull[i-1].x == current_pair[1].x and hull[i-1].y == current_pair[1].y:
+            start=True
+            if hull[i].x == current_pair[0].x and hull[i].y == current_pair[0].y:
+                end=True
+    
+    if current_pair and start==True and end==True:
+        pygame.draw.line(screen, (0,255,255), (current_pair[0].x, current_pair[0].y), (current_pair[1].x, current_pair[1].y), 2)
+    else:
+        pygame.draw.line(screen, (0,100,100), (current_pair[0].x, current_pair[0].y), (current_pair[1].x, current_pair[1].y), 2)
+    pygame.draw.line(screen, (0,255,255), (hull[-1].x, hull[-1].y), (hull[0].x, hull[0].y), 2)
+    pygame.display.flip()
+
+def final(hull,points):
+    screen.fill((0, 15,15))  
+  
+    for p in points:
+        p.draw(screen)
+    for i in range(1, len(hull)):
+        pygame.draw.line(screen, (0,255,255), (hull[i-1].x, hull[i-1].y), (hull[i].x, hull[i].y), 2)
+    pygame.draw.line(screen, (0,255,255), (hull[-1].x, hull[-1].y), (hull[0].x, hull[0].y), 2)  # Connect last point to the first
+    pygame.display.flip()
 def get_points():
     ps = []
     with open("points.txt", 'r') as file:
@@ -13,57 +72,37 @@ def get_points():
                 ps.append((x, y)) 
     return ps
 
-def bruf(screen):
+def bruf(scr):
+    global screen
+    screen = scr
+    global clock
     clock = pygame.time.Clock()
-    pygame.init()
-    background = (0,15,15)
-    ppoints = get_points()
+    p = get_points()
     points = []
-    pc = (0,150,150)
-    for a in ppoints:
-        points.append(c.point(a[0],a[1],pc,5))
+    pc = (0,200,200)
+    for a in p:
+        points.append(Point(a[0],a[1],pc,5))
     
-    #effects=-=-=-=-=-=--=-=
-    fps = round(clock.get_fps(),2)
-    fp = str(fps)
-    fm = c.Text(fp,cm.fonts[0],12,(0,50,50),10,700)
-    dframe = c.point(10,700,(0,10,10),70)
-    #dot=-=-=
-    dot = c.point(0,0,(0,10,10),60)
-    dot_interval = 3000
-    last_dot_time = 0
-    #trail-=-=-
-    firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
-    tr = c.trail(firstset,7)
-    #=-=-=-=-=-=-=-=--=-=-=-=
-    screen.fill(background)
     
+    convex_hull = bruteforce(points)
+    
+    # Main loop
     running = True
-    while running:
+    current_pair = None
+    
+    for i in range(len(points)):
+        for j in range(i+1, len(points)):
+            current_pair = (points[i], points[j])
+            draw(points,convex_hull, current_pair)
+            clock.tick(10)  # Adjust the frame rate as needed
+     
+    final(convex_hull,points)
+    # Wait for a key press before quitting
+    waiting = True
+    while waiting:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+                waiting = False
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
                 return
-        mouse =  pygame.mouse.get_pos()
-        print(mouse)
-        #graham here
-
-        #shashke =-=-=-=-=
-        fm.update_text(str(round(clock.get_fps(),2)))
-        dframe.draw(screen)
-        fm.draw(screen)   
-        current_time = pygame.time.get_ticks()
-        if current_time - last_dot_time > dot_interval:
-            dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
-            dot.draw(screen)
-            last_dot_time = current_time
-        for a in points:
-            a.draw(screen)
-        #trailstart
-        tr.erasetrail(screen,background)
-        tr.updatetrail(mouse)
-        tr.drawtrail(screen)
-        #trailend    
-        pygame.display.flip()
-        clock.tick(60)
+                

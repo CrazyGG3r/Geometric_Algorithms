@@ -47,67 +47,73 @@ class JarvisMarch:
                 break
             p = q
 
+def miny(p):
+    mini = 0
+    min_y_value = p[0][1]  # Assuming the second element of the tuple is the y-coordinate
+    for n, a in enumerate(p):
+        if a[1] < min_y_value:  # Compare y-coordinates
+            mini = n
+            min_y_value = a[1]
+    return mini
 
+def leftorright(p1, p2, coords):
+    # Handle vertical lines
+    if p1[0] == p2[0]:
+        return coords[0] <= p1[0]
+    else:
+        m = (p1[1] - p2[1]) / (p1[0] - p2[0])
+        x = ((coords[1] - p1[1]) / m) + p1[0]
+        return coords[0] <= x
+    
 
-
-
-
-
-
-class GrahamScanVisualization:
-    def __init__(self, points):
-        self.points = points
+    
+class bf:
+    def __init__(self,p ):
+        self.points = p
+        #(x,y)
+        self.minxindex = miny(self.points)
         self.hull = []
+        self.left = []
+        self.right = []
+    
+    def addleft(self):
+       
+        
+        count  = 0 
+        p1 =self.points[self.minxindex]
+        for n,p2 in  enumerate(self.points):
+            if p2 in self.hull:
+                continue
+            for n,a in enumerate(self.points):
+                if a in self.hull:
+                    continue
+                if leftorright(p1,p2,a):
+                    self.left.append(a)
+                    count +=1
+                else:
+                    self.right.append(a)
+        
+    def addglow(self,screen):
+        p = c.point(0,0,(0,255,255),5)
+        once = 0
+        for a in self.left:
+            if once == 1:
+                break
+            #p.draw(screen)
+            #p.update_coords(a[1])
+            print(a)
+        once = 1
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+                  return
+        
+        
+                    
+                    
 
-    def orientation(self, p, q, r):
-        val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
-        if val == 0:
-            return 0  # Collinear
-        elif val > 0:
-            return 1  # Clockwise
-        return 2  # Counterclockwise
 
-    def graham_scan(self):
-        n = len(self.points)
-        if n < 3:
-            return
 
-        pivot = min(self.points, key=lambda p: (p.y, p.x))
-        sorted_points = sorted(self.points, key=lambda p: math.atan2(p.y - pivot.y, p.x - pivot.x))
-        self.hull = [pivot, sorted_points[0], sorted_points[1]]
 
-        for i in range(2, n):
-            while len(self.hull) > 1 and self.orientation(self.hull[-2], self.hull[-1], sorted_points[i]) != 2:
-                self.draw(sorted_points[i])
-                pygame.display.flip()
-                clock.tick(60)  # Adjust the frame rate as needed
-                self.hull.pop()
-
-            self.hull.append(sorted_points[i])
-            self.draw(sorted_points[i])
-            pygame.display.flip()
-            clock.tick(60)  # Adjust the frame rate as needed
-
-    def draw(self, current_point, accepted=True):
-        screen.fill((0, 0, 0))
-
-        for i in range(len(self.hull) - 1):
-            self.hull[i].draw_to_point(screen, self.hull[i + 1], color=(0, 255, 0), width=2)
-        if len(self.hull) > 1:
-            self.hull[-1].draw_to_point(screen, self.hull[0], color=(0, 255, 0), width=2)
-
-        for p in self.points:
-            p.draw(screen)
-
-        # Draw a dotted line to the rejected points
-        if not accepted:
-            for point in self.points:
-                if point not in self.hull:
-                    pygame.draw.line(screen, (255, 0, 0), (current_point.x, current_point.y),
-                                     (point.x, point.y), 2)
-
-        pygame.display.flip()
-        clock.tick(2)  # Adjust the frame rate as needed  
 
 class QuickElimination:
     def __init__(self, points):

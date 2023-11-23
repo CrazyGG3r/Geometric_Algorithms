@@ -3,22 +3,19 @@ import CLASSES as c
 import cosmetics as cm
 import CONVEXHULL as ch
 import random as r
-import jarvis as j
-import graham as g
-import quickhull as q
-import bruteforce as b
+import LIINESEC as Lin
+import ccw 
 def get_points():
     ps = []
-    with open("points.txt", 'r') as file:
+    with open("line.txt", 'r') as file:
             for line in file:
                 coordinates = line.split(',')
                 x, y = map(int, coordinates)
                 ps.append((x, y)) 
     return ps
 
-
 def conv(screen):
-    pygame.init()
+    background = (0,15,15)
     ps = get_points()
     plottablepoints = []
     pc = (0,150,150)
@@ -28,6 +25,7 @@ def conv(screen):
     #
     background = (0,15,15)
     clock = pygame.time.Clock()
+    linee = c.line(1,2,(0,90,90))
     #effects=-=-=-=-=-=--=-=
     fps = round(clock.get_fps(),2)
     fp = str(fps)
@@ -35,15 +33,12 @@ def conv(screen):
     dframe = c.point(10,700,(0,10,10),70)
     #dot
     dot = c.point(0,0,(0,10,10),60)
-    dot_interval = 3000
+    dot_interval = 1000
     last_dot_time = 0
     #trail
     firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
     tr = c.trail(firstset,7)
     #=-=-=-=-=-=-=-=--=-=-=-=
-    
-
-
     #buttons
     lbx = 10
     lby = 650
@@ -54,17 +49,16 @@ def conv(screen):
     size = 25
     off = 50
     ox = bw + 50
-    b1 = c.Button("Jarvis March"     ,lbx       ,lby,bw,bh,ft,size,tc,j.jar)
-    b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,g.gra)
-    b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,q.qui)
-    b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,b.bruf)
-    b5 = c.Button("Montone's algo "  ,lbx+(ox*4),lby,bw,bh,ft,size,tc,None)
-    butt  = [b1,b2,b3,b4,b5]
-    page_requested = None
-    #=-=-=-=-=-=-=-
+    b1 = c.Button("Line Sweep"       ,lbx       ,lby,bw,bh,ft,size,tc,Lin.lineint)
+    b2 = c.Button("CCW"              ,lbx+(ox*1),lby,bw,bh,ft,size,tc,ccw.cw)
+    b3 = c.Button("Slope",lbx+(ox*2),lby,bw,bh,ft,size,tc,None)
     screen.fill(background)
+    butt  = [b1,b2,b3]
+    page_requested = None
+    
     while True:
          mouse = pygame.mouse.get_pos() 
+         dt = clock.tick(60) / 1000.0
          for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False 
@@ -98,14 +92,17 @@ def conv(screen):
              dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
              dot.draw(screen)
              last_dot_time = current_time
-            
+         linee.update(dt)
          fm.update_text(str(round(clock.get_fps(),2)))
          dframe.draw(screen)
-         fm.draw(screen)   
+         fm.draw(screen)  
+         linee.draw(screen,plottablepoints[0],plottablepoints[1])
+         linee.draw(screen,plottablepoints[2],plottablepoints[3])
          for a in plottablepoints:
              a.draw(screen) 
          for a in butt:
              a.draw(screen)
+         
          clock.tick(60)
          #trailstart
          tr.erasetrail(screen,background)

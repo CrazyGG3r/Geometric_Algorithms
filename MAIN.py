@@ -8,6 +8,7 @@ import setpoints as se
 import CVHscreen as cvhp
 import setline as sl
 import LIINESEC as lint
+import linescreen as ll
 
 #pygame kachra =-=-=-=--=-=-
 pygame.init()
@@ -42,18 +43,19 @@ screen.fill(background)
 #buttons
 def dummdumm(screen = NULL):
     print("dumdum")
-b1 = 535
+b1 = 540
 b2 = 180
 o = 35
 buttoncolor = (0,170,170)
 
 button0 = c.Button("Set Points"       ,b1-10 ,b2      ,150,25,cm.fonts[0],20,buttoncolor,se.sets)
 button1 = c.Button("Set Line"         ,b1-10 ,b2+(o*1),150,25,cm.fonts[0],20,buttoncolor,sl.setline)
-button2 = c.Button("Convex Hull"      ,b1-20,b2+(o*2),170,25,cm.fonts[0],20,buttoncolor,cvhp.conv)
-button3 = c.Button("Line Intersection",b1   ,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,lint.lineint)
-button4 = c.Button("Credits"          ,b1   ,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
-button5 = c.Button("Exit"             ,b1   ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,ext)
-butt = [button0,button1,button2,button3,button4,button5] 
+button2 = c.Button("Convex Hull"      ,b1-20 ,b2+(o*2),170,25,cm.fonts[0],20,buttoncolor,cvhp.conv)
+button3 = c.Button("Line Intersection",b1+3  ,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,ll.conv)
+button4 = c.Button("What is ....."    ,b1    ,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
+button5 = c.Button("Credits"          ,b1    ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
+button6 = c.Button("Exit"             ,b1    ,b2+(o*6),130,25,cm.fonts[0],20,buttoncolor,ext)
+butt = [button0,button1,button2,button3,button4,button5,button6] 
 page_requested = None
 #=-=-=-
 fps = round(clock.get_fps(),2)
