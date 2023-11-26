@@ -10,6 +10,7 @@ class point:
         self.color = color
         self.radius = size
         self.completed = True
+        self.w = 1
     
         
     def dynamic_color_draw(self,surface,colo):
@@ -24,8 +25,11 @@ class point:
         info.draw(surface)
     def drawcustom(self,screen,outr,colo):
         pygame.draw.line(screen,colo,(self.x,self.y),(outr.x,outr.y),2)
-    def draw_to_point(self,screen,outr):
-        pygame.draw.line(screen,self.color,(self.x,self.y),(outr.x,outr.y))
+    def draw_to_point(self,screen,outr,color = None):
+        if color == None:
+            pygame.draw.line(screen,self.color,(self.x,self.y),(outr.x,outr.y))
+        else:
+            pygame.draw.line(screen,color,(self.x,self.y),(outr.x,outr.y))
 class line:
     def __init__(self,w,duration,color):
         self.w = w

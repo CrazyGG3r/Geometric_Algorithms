@@ -7,6 +7,7 @@ import jarvis as j
 import graham as g
 import quickhull as q
 import bruteforce as b
+import mon0tone as m
 def get_points():
     ps = []
     with open("points.txt", 'r') as file:
@@ -58,7 +59,7 @@ def conv(screen):
     b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,g.gra)
     b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,q.quick)
     b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,b.bruf)
-    b5 = c.Button("Montone's algo "  ,lbx+(ox*4),lby,bw,bh,ft,size,tc,None)
+    b5 = c.Button("Monotone's algo "  ,lbx+(ox*4),lby,bw,bh,ft,size,tc,m.momo)
     butt  = [b1,b2,b3,b4,b5]
     page_requested = None
     #=-=-=-=-=-=-=-

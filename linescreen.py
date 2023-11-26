@@ -32,6 +32,7 @@ def conv(screen):
     fm = c.Text(fp,cm.fonts[0],12,(0,50,50),10,700)
     dframe = c.point(10,700,(0,10,10),70)
     #dot
+    ld = c.line(50,1,(0,10,10))
     dot = c.point(0,0,(0,10,10),60)
     dot_interval = 1000
     last_dot_time = 0
@@ -89,8 +90,7 @@ def conv(screen):
             page_requested = None  # Reset the flag
          current_time = pygame.time.get_ticks()
          if current_time - last_dot_time > dot_interval:
-             dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
-             dot.draw(screen)
+             ld.idraw(screen,(r.randint(0,screen.get_width()),r.randint(0,screen.get_height())),(r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
              last_dot_time = current_time
          linee.update(dt)
          fm.update_text(str(round(clock.get_fps(),2)))

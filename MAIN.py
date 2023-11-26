@@ -22,8 +22,7 @@ exiet = 0
 def ext(a = 0):
     global exiet
     exiet = 1
-    
-    
+pygame.mouse.set_visible(False)    
 
 #mouse effects
 firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
