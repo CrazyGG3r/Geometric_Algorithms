@@ -2,6 +2,8 @@ import pygame
 import CLASSES as c
 import cosmetics as cm 
 import random as r
+import infoconvex as ic
+
 
 def what(screen):
     background = (0,15,15)
@@ -24,15 +26,17 @@ def what(screen):
     tr = c.trail(firstset,7)
     #=-=-=-=-=-=-=-=--=-=-=-=
     tc = (0,150,150) 
-    heading = c.Text("What is a: ",cm.fonts[0],40,tc,480,120)
+    heading = c.Text("What is a: ",cm.fonts[0],40,tc,480,220)
     running = True
     b1x = 290
     b1y = 300
-    bw = 200
+    bw = 240
     bh = 40
     tc = (0,150,150)
-    b1 = c.Button("Convex Hull",b1x,b1y,bw,bh,cm.fonts[0],36,tc,None)    
-    butt = [b1]
+    b1 = c.Button("Convex Hull"      ,b1x          ,b1y,bw,bh,cm.fonts[0],36,tc,ic.cvwhat)    
+    b2 = c.Button("Line Intersection",b1x + bw + 100,b1y,bw+60,bh,cm.fonts[0],36,tc,None)    
+    
+    butt = [b1,b2]
     page_requested = None
     screen.fill(background)
     while running:

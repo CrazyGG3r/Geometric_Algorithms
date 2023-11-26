@@ -16,6 +16,7 @@ def savetofile(points):
 def drawline(screen): 
     pygame.init()
     #dot
+    ls = c.line(5,1,(0,19,19))
     dot = c.point(0,0,(0,19,19),100)
     dot_interval = 1000
     last_dot_time = 0
@@ -42,6 +43,7 @@ def drawline(screen):
     selected = 0
   
     while running:
+          
           for event in pygame.event.get():
              if event.type == pygame.QUIT:
                  running = False
@@ -62,8 +64,8 @@ def drawline(screen):
                  return
           current_time = pygame.time.get_ticks()
           if current_time - last_dot_time > dot_interval:
-              dot.update_coords((r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
-              dot.draw(screen)
+              
+              ls.idraw(screen,(r.randint(0,screen.get_width()),r.randint(0,screen.get_height())),(r.randint(0,screen.get_width()),r.randint(0,screen.get_height())))
               last_dot_time = current_time
           for a in p4:
               a.draw(screen)

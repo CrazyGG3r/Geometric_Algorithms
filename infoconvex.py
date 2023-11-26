@@ -1,24 +1,35 @@
-import pygame 
+import pygame
 import CLASSES as c
-import cosmetics as cm
-import CONVEXHULL as ch
+import cosmetics as cm 
 import random as r
-import jarvis as j
-import graham as g
-import quickhull as q
-import bruteforce as b
 def get_points():
     ps = []
-    with open("points.txt", 'r') as file:
+    with open("ipoints.txt", 'r') as file:
+            for line in file:
+                coordinates = line.split(',')
+                x, y = map(int, coordinates)
+                ps.append((x, y)) 
+    return ps
+def get_pointsr():
+    ps = []
+    with open("cvh.txt", 'r') as file:
             for line in file:
                 coordinates = line.split(',')
                 x, y = map(int, coordinates)
                 ps.append((x, y)) 
     return ps
 
-
-def conv(screen):
-    pygame.init()
+def cvwhat(screen):
+    background = (0,15,15)
+    clock = pygame.time.Clock()
+    h = get_pointsr()
+    plottablehull = []
+    pc = (0,150,150)
+    #convert points in to plottable points
+    for a in h:
+        plottablehull.append(c.point(a[0],a[1],pc,5))
+    #
+    #-=-=-=-=-
     ps = get_points()
     plottablepoints = []
     pc = (0,150,150)
@@ -26,44 +37,38 @@ def conv(screen):
     for a in ps:
         plottablepoints.append(c.point(a[0],a[1],pc,5))
     #
-    background = (0,15,15)
-    clock = pygame.time.Clock()
     #effects=-=-=-=-=-=--=-=
     fps = round(clock.get_fps(),2)
     fp = str(fps)
     fm = c.Text(fp,cm.fonts[0],12,(0,50,50),10,700)
     dframe = c.point(10,700,(0,10,10),70)
     #dot
-    dot = c.point(0,0,(0,10,10),60)
-    dot_interval = 3000
+    lc = (0,25,25)
+    line = c.line(2,1,lc)
+    aline= c.line(2,1,lc)
+    dc = (0,10,10)
+    dot = c.point(0,0,dc,50)
+    dot_interval = 1000
     last_dot_time = 0
     #trail
     firstset = [(0,0),(0,0),(0,0),(0,0),(0,0)]
     tr = c.trail(firstset,7)
     #=-=-=-=-=-=-=-=--=-=-=-=
-    
-
-
-    #buttons
-    lbx = 10
-    lby = 650
-    bw = 200
+    tc = (0,150,150) 
+    heading = c.Text("What is a: ",cm.fonts[0],40,tc,480,220)
+    running = True
+    b1x = 290
+    b1y = 300
+    bw = 240
     bh = 40
-    ft = cm.fonts[0]
     tc = (0,150,150)
-    size = 25
-    off = 50
-    ox = bw + 50
-    b1 = c.Button("Jarvis March"     ,lbx       ,lby,bw,bh,ft,size,tc,j.jar)
-    b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,g.gra)
-    b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,q.quick)
-    b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,b.bruf)
-    b5 = c.Button("Montone's algo "  ,lbx+(ox*4),lby,bw,bh,ft,size,tc,None)
-    butt  = [b1,b2,b3,b4,b5]
+    
+    
+    butt = []
     page_requested = None
-    #=-=-=-=-=-=-=-
     screen.fill(background)
-    while True:
+    running = True
+    while running: 
          mouse = pygame.mouse.get_pos() 
          for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -101,7 +106,12 @@ def conv(screen):
             
          fm.update_text(str(round(clock.get_fps(),2)))
          dframe.draw(screen)
-         fm.draw(screen)   
+         fm.draw(screen)
+         b = plottablehull[0]
+         for a in plottablehull:
+             a.draw_to_point(screen,b)
+             b = a
+         b.draw_to_point(screen,plottablehull[0])
          for a in plottablepoints:
              a.draw(screen) 
          for a in butt:
