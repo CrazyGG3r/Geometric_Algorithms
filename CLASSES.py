@@ -104,8 +104,9 @@ class trail:
         
         
     def drawtrail(self, screen):
-        for n,a in enumerate(self.trailpoints):
-            a.dynamic_color_draw(screen,(0,(200 - (20*n)),(200-(20*n))))
+       for n, a in reversed(list(enumerate(self.trailpoints))):
+            a.dynamic_color_draw(screen, (0, (200 - (20 * n)), (200 - (20 * n))))
+
     
     def erasetrail(self,screen,bg):
         for a in self.trailpoints:

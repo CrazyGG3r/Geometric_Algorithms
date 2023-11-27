@@ -109,7 +109,7 @@ def cw(scr):
                return
 
         # Increment progress for line drawing
-        progress += 0.01
+        progress += 0.02
         if progress >= 1.0:
             progress = 1.0
 
@@ -142,7 +142,7 @@ def cw(scr):
         pygame.display.flip()
 
         # Control the drawing speed
-        clock.tick(60)
+        clock.tick(100)
 
         # Exit the loop after the animation is complete
         if progress >= 1.0:

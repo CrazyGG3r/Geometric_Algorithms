@@ -55,7 +55,7 @@ def conv(screen):
     size = 25
     off = 50
     ox = bw + 50
-    b1 = c.Button("Jarvis March"     ,lbx       ,lby,bw,bh,ft,size,tc,j.jar)
+    b1 = c.Button("Jarvis March "     ,lbx       ,lby,bw,bh,ft,size,tc,j.jar)
     b2 = c.Button("Graham Scan"      ,lbx+(ox*1),lby,bw,bh,ft,size,tc,g.gra)
     b3 = c.Button("Quick Elimination",lbx+(ox*2),lby,bw,bh,ft,size,tc,q.quick)
     b4 = c.Button("Brute Force"      ,lbx+(ox*3),lby,bw,bh,ft,size,tc,b.bruf)

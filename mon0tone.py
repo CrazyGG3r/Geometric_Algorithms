@@ -38,10 +38,12 @@ def draw(points, upper_hull, lower_hull, current_point):
 # Sort points by x-coordinate
 
 # Initialize Monotone Chain Convex Hull
-upper_hull = []
-lower_hull = []
+global upper_hull
+global lower_hull
 def momo(scr):
     global screen
+    upper_hull = []
+    lower_hull = []
     screen = scr
     ps = get_points()
     global points
@@ -88,5 +90,7 @@ def momo(scr):
             # Wait for 2 seconds before quitting
             clock.tick(1)
             running = False
+    lower_hull = []
+    upper_hull = []
     return 
 

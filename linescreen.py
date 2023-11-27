@@ -5,6 +5,7 @@ import CONVEXHULL as ch
 import random as r
 import LIINESEC as Lin
 import ccw 
+import slope as slo
 def get_points():
     ps = []
     with open("line.txt", 'r') as file:
@@ -52,7 +53,7 @@ def conv(screen):
     ox = bw + 50
     b1 = c.Button("Line Sweep"       ,lbx       ,lby,bw,bh,ft,size,tc,Lin.lineint)
     b2 = c.Button("CCW"              ,lbx+(ox*1),lby,bw,bh,ft,size,tc,ccw.cw)
-    b3 = c.Button("Slope",lbx+(ox*2),lby,bw,bh,ft,size,tc,None)
+    b3 = c.Button("Slope",lbx+(ox*2),lby,bw,bh,ft,size,tc,slo.slop)
     screen.fill(background)
     butt  = [b1,b2,b3]
     page_requested = None

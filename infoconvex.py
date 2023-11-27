@@ -55,7 +55,11 @@ def cvwhat(screen):
     tr = c.trail(firstset,7)
     #=-=-=-=-=-=-=-=--=-=-=-=
     tc = (0,150,150) 
-    heading = c.Text("What is a: ",cm.fonts[0],40,tc,480,220)
+    hx = 213
+    hy = 480
+    h1 = c.Text("It is a boundary defined such that ",cm.fonts[0],30,tc,hx,hy)
+    h2 = c.Text("each point and linesegment lies inside of it. ",cm.fonts[0],30,tc,hx,hy + 40)
+
     running = True
     b1x = 290
     b1y = 300
@@ -63,7 +67,7 @@ def cvwhat(screen):
     bh = 40
     tc = (0,150,150)
     
-    
+    h =[h1,h2]
     butt = []
     page_requested = None
     screen.fill(background)
@@ -114,6 +118,8 @@ def cvwhat(screen):
          b.draw_to_point(screen,plottablehull[0])
          for a in plottablepoints:
              a.draw(screen) 
+         for a in h:
+             a.draw(screen)
          for a in butt:
              a.draw(screen)
          clock.tick(60)

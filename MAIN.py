@@ -10,7 +10,7 @@ import setline as sl
 import LIINESEC as lint
 import linescreen as ll
 import WHAT as w
-
+import creds
 #pygame kachra =-=-=-=--=-=-
 pygame.init()
 width, height = 1280, 720
@@ -34,7 +34,7 @@ headin = c.Text("Geometric Algorithms",cm.fonts[0],50,hcolor,320,90)
 dot = c.point(0,0,(0,27,27),10)
 dotbig = c.point(0,0,(0,17,17),5)
 dotvbig = c.point(0,0,(0,16,16),5)
-dot_interval = 30
+dot_interval = 400
 last_dot_time = 0
 l = c.line(1,10,(50,50,50))
 screen.fill(background)
@@ -53,7 +53,7 @@ button1 = c.Button("Set Line"         ,b1-10 ,b2+(o*1),150,25,cm.fonts[0],20,but
 button2 = c.Button("Convex Hull"      ,b1-20 ,b2+(o*2),170,25,cm.fonts[0],20,buttoncolor,cvhp.conv)
 button3 = c.Button("Line Intersection",b1+3  ,b2+(o*3),130,25,cm.fonts[0],20,buttoncolor,ll.conv)
 button4 = c.Button("What is a...?"    ,b1    ,b2+(o*4),130,25,cm.fonts[0],20,buttoncolor,w.what)
-button5 = c.Button("Credits"          ,b1    ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,dummdumm)
+button5 = c.Button("Credits"          ,b1    ,b2+(o*5),130,25,cm.fonts[0],20,buttoncolor,creds.creds)
 button6 = c.Button("Exit"             ,b1    ,b2+(o*6),130,25,cm.fonts[0],20,buttoncolor,ext)
 butt = [button0,button1,button2,button3,button4,button5,button6] 
 page_requested = None
@@ -64,7 +64,7 @@ fm = c.Text(fp,cm.fonts[0],12,(0,50,50),10,700)
 dframe = c.point(10,700,(0,10,10),70)
 
 while running:
-    dt = clock.tick(60) / 1000.0
+    dt = clock.tick(100) / 1000.0
     if exiet == 1 :
         break
     for event in pygame.event.get():
