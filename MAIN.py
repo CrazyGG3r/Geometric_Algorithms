@@ -64,7 +64,6 @@ fm = c.Text(fp,cm.fonts[0],12,(0,50,50),10,700)
 dframe = c.point(10,700,(0,10,10),70)
 
 while running:
-    dt = clock.tick(100) / 1000.0
     if exiet == 1 :
         break
     for event in pygame.event.get():
